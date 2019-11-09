@@ -2,13 +2,12 @@ package si.inspirited.service.impl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import si.inspirited.service.ICollectorService;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -25,9 +24,9 @@ public class CollectorService implements ICollectorService {
         return json.toList();
     }
     
-    static JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
+    private static JSONArray readJsonFromUrl(final String url) throws IOException, JSONException {
         try (InputStream inputStream = new URL(url).openStream()) {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String jsonText = readAll(bufferedReader);
             JSONArray json = new JSONArray(jsonText);
             return json;
