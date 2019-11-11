@@ -14,10 +14,10 @@ import java.util.List;
 public class CollectorService implements ICollectorService {
 
     @Override
-    public List<Object> getSnapshot() {
+    public List<Object> getSnapshot(final String url) {
         JSONArray json = new JSONArray();
         try {
-            json = readJsonFromUrl("https://sandbox.iexapis.com/stable/ref-data/symbols?token=Tpk_ee567917a6b640bb8602834c9d30e571");
+            json = readJsonFromUrl(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
