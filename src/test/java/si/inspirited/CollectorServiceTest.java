@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 import si.inspirited.service.ICollectorService;
 
@@ -19,9 +20,13 @@ public class CollectorServiceTest {
     @Autowired
     ICollectorService collectorService;
 
+    @Autowired
+    Environment env;
+
     @Test
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
-        List<Object> expectedDataFromInputStream = collectorService.getSnapshot( "https://sandbox.iexapis.com/stable/ref-data/symbols?token=Tpk_ee567917a6b640bb8602834c9d30e571");
+        String url = env.getProperty("url.source.allCompaniesReview");
+        List<Object> expectedDataFromInputStream = collectorService.getSnapshot(url);
 
         assertNotNull(expectedDataFromInputStream);
         assertFalse(expectedDataFromInputStream.isEmpty());
