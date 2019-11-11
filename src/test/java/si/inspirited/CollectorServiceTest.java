@@ -21,7 +21,7 @@ public class CollectorServiceTest {
 
     @Test
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
-        List<Object> expectedDataFromInputStream = collectorService.getSnapshot();
+        List<Object> expectedDataFromInputStream = collectorService.getSnapshot( "https://sandbox.iexapis.com/stable/ref-data/symbols?token=Tpk_ee567917a6b640bb8602834c9d30e571");
 
         assertNotNull(expectedDataFromInputStream);
         assertFalse(expectedDataFromInputStream.isEmpty());
