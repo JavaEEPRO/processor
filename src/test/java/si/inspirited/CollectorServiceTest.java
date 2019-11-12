@@ -1,5 +1,6 @@
 package si.inspirited;
 
+import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 import si.inspirited.service.ICollectorService;
+import si.inspirited.service.impl.CollectorService;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,6 +30,8 @@ public class CollectorServiceTest {
     @Autowired
     Environment env;
 
+    private final String MOCK_DATA_AS_ARRAY = "[{'json':'test data'},{'exit' : '0'}]";
+
     @Test
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
         String url = env.getProperty("url.source.allCompaniesReview");
@@ -30,5 +39,26 @@ public class CollectorServiceTest {
 
         assertNotNull(expectedDataFromInputStream);
         assertFalse(expectedDataFromInputStream.isEmpty());
+    }
+
+    @Test
+    public void readJsonFromInputStream_whenReceivedDataCorrespondsToSent_thenCorrect() {
+        CollectorService instance = new CollectorService();
+        JSONArray res = new JSONArray();
+        try {
+            res = instance.readJsonFromInputStream(mockInputStream());
+        }catch(IOException e) { e.printStackTrace(); }
+
+        assertEquals(2, res.length());
+        String[] sentData = MOCK_DATA_AS_ARRAY.split("'");
+        String[] receivedData = res.toString().split("\"");
+
+        for (int i = 0; i < sentData.length; i++) {
+            assertEquals(sentData[i].trim(), receivedData[i].trim());
+        }
+    }
+
+    private InputStream mockInputStream() {
+        return new ByteArrayInputStream(MOCK_DATA_AS_ARRAY.getBytes());
     }
 }

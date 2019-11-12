@@ -24,20 +24,20 @@ public class CollectorService implements ICollectorService {
         return json.toList();
     }
     
-    private static JSONArray readJsonFromUrl(final String url) throws IOException, JSONException {
+    private JSONArray readJsonFromUrl(final String url) throws IOException, JSONException {
         try (InputStream inputStream = new URL(url).openStream()) {
             return readJsonFromInputStream(inputStream);
         }
     }
 
-    private static JSONArray readJsonFromInputStream(final InputStream inputStream) throws IOException{
+    public JSONArray readJsonFromInputStream(final InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         String jsonText = readAll(bufferedReader);
         JSONArray json = new JSONArray(jsonText);
         return json;
     }
 
-    private static String readAll(Reader reader) throws IOException {
+    private String readAll(Reader reader) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         int cp;
         while ((cp = reader.read()) != -1) {
