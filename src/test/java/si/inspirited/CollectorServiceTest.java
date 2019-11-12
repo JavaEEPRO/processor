@@ -48,8 +48,8 @@ public class CollectorServiceTest {
         try {
             res = instance.readJsonFromInputStream(mockInputStream());
         }catch(IOException e) { e.printStackTrace(); }
-
-        assertEquals(2, res.length());
+        int etalonLength = MOCK_DATA_AS_ARRAY.split(",").length;
+        assertEquals(etalonLength, res.length());
         String[] sentData = MOCK_DATA_AS_ARRAY.split("'");
         String[] receivedData = res.toString().split("\"");
 
