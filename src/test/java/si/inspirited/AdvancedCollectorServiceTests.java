@@ -24,7 +24,7 @@ public class AdvancedCollectorServiceTests {
     final String STOCK_CODE_STUB = "MSFT";
 
     @Test
-    public void getExtendedCompanySnapshot_WhenReceivedObjectIsNotNull_thenCorrect() {
+    public void getExtendedCompanySnapshot_whenReceivedObjectIsNotNull_thenCorrect() {
         final String url = env.getProperty("url.source.extendedCompanyReview");
         final String token = env.getProperty("token");
         Object expectedData;

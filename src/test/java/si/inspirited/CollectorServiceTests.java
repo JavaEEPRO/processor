@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CollectorServiceTest {
+public class CollectorServiceTests {
 
     @Autowired
     ICollectorService collectorService;
