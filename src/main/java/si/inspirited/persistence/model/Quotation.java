@@ -1,18 +1,19 @@
 package si.inspirited.persistence.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
 
 @Entity
-public class CompanyWideInfo implements Serializable {
+@Table(name="quotation")
+public class Quotation implements Serializable {
+
+    private static final long serialVersionUID = 19773242L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String symbol;
     private String companyName;
     private String primaryExchange;
@@ -23,7 +24,7 @@ public class CompanyWideInfo implements Serializable {
     private LocalTime closeTime;
     private String high;
     private String low;
-    private String latestPrice;
+    private Double latestPrice;
     private String latestSource;
     private LocalTime latestTime;
     private Long latestUpdate;
@@ -40,7 +41,7 @@ public class CompanyWideInfo implements Serializable {
     private String previousClose;
     private Long previousVolume;
     private String change;
-    private String changePercent;
+    private Double changePercent;
     private String volume;
     private String iexMarketPercent;
     private Long iexVolume;
@@ -147,11 +148,11 @@ public class CompanyWideInfo implements Serializable {
         this.low = low;
     }
 
-    public String getLatestPrice() {
+    public Double getLatestPrice() {
         return latestPrice;
     }
 
-    public void setLatestPrice(String latestPrice) {
+    public void setLatestPrice(Double latestPrice) {
         this.latestPrice = latestPrice;
     }
 
@@ -283,11 +284,11 @@ public class CompanyWideInfo implements Serializable {
         this.change = change;
     }
 
-    public String getChangePercent() {
+    public Double getChangePercent() {
         return changePercent;
     }
 
-    public void setChangePercent(String changePercent) {
+    public void setChangePercent(Double changePercent) {
         this.changePercent = changePercent;
     }
 
