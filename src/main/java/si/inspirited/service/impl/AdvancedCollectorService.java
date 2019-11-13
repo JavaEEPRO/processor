@@ -15,10 +15,11 @@ public class AdvancedCollectorService implements IAdvancedCollectorService {
     ICollectorService collectorService;
 
     @Override
-    public Object getExtendedCompanySnapshot(String url, String stockCode) {
+    public Object getExtendedCompanySnapshot(final String url, final String stockCode, final String token) {
         if (stockCode == null || "".equals(stockCode.trim())) { throw new InvalidStockCodeException(); }
-        String formattedUrl = url != null ? url.replace("{stockCode}", stockCode) : "";
-        List<Object> data = collectorService.getSnapshot(formattedUrl);
+        String formattedUrl = url != null ? url : "";
+        formattedUrl =  formattedUrl.replace("{stockCode}", stockCode);
+        List<Object> data = collectorService.getSnapshot(formattedUrl, token);
         if (data.size() == 1) { return data.get(0); }
         return null;
     }

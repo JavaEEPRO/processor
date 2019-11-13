@@ -37,7 +37,8 @@ public class CollectorServiceTest {
     @Test
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
         String url = env.getProperty("url.source.allCompaniesReview");
-        List<Object> expectedDataFromInputStream = collectorService.getSnapshot(url);
+        String token = env.getProperty("token");
+        List<Object> expectedDataFromInputStream = collectorService.getSnapshot(url, token);
 
         assertNotNull(expectedDataFromInputStream);
         assertFalse(expectedDataFromInputStream.isEmpty());

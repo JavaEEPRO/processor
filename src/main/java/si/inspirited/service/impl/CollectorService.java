@@ -16,10 +16,11 @@ import java.util.List;
 public class CollectorService implements ICollectorService {
 
     @Override
-    public List<Object> getSnapshot(final String url) {
+    public List<Object> getSnapshot(final String url, final String token) {
+        final String completeUrl = url + token;
         JSONArray json = new JSONArray();
         try {
-            json = readJsonFromUrl(url);
+            json = readJsonFromUrl(completeUrl);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,7 +51,7 @@ public class CollectorService implements ICollectorService {
         return json;
     }
 
-    private String readAll(Reader reader) throws IOException {
+    private String readAll(final Reader reader) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         int cp;
         while ((cp = reader.read()) != -1) {

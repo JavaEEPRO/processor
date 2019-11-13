@@ -1,8 +1,6 @@
 package si.inspirited.service;
 
-import java.util.List;
-
 public interface IAdvancedCollectorService {
 
-    Object getExtendedCompanySnapshot(String url, String StockCode);
+    Object getExtendedCompanySnapshot(String url, String StockCode, final String token);
 }
