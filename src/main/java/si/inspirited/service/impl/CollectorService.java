@@ -2,6 +2,7 @@ package si.inspirited.service.impl;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import si.inspirited.error.UnexpectedReceivedDataFormatException;
 import si.inspirited.service.ICollectorService;
@@ -37,10 +38,14 @@ public class CollectorService implements ICollectorService {
         JSONArray json = new JSONArray();
         try {
             json = new JSONArray(jsonText);
-        } catch (JSONException jsonException) {
-            UnexpectedReceivedDataFormatException unexpectedReceivedDataFormatException = new UnexpectedReceivedDataFormatException(jsonException.getMessage(), jsonException.getCause());
-            unexpectedReceivedDataFormatException.setStackTrace(jsonException.getStackTrace());
-            throw unexpectedReceivedDataFormatException;
+        } catch (JSONException e) {
+            try {
+                json.put(new JSONObject(jsonText));
+            } catch (JSONException jsonException) {
+                UnexpectedReceivedDataFormatException unexpectedReceivedDataFormatException = new UnexpectedReceivedDataFormatException(jsonException.getMessage(), jsonException.getCause());
+                unexpectedReceivedDataFormatException.setStackTrace(jsonException.getStackTrace());
+                throw unexpectedReceivedDataFormatException;
+            }
         }
         return json;
     }
