@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface IAdvancedCollectorService {
 
-    Object getExtendedCompanySnapshot(String url);
+    Object getExtendedCompanySnapshot(String url, String StockCode);
 }

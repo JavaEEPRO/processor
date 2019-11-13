@@ -9,7 +9,7 @@ import java.util.List;
 public class AdvancedCollectorService implements IAdvancedCollectorService {
 
     @Override
-    public List<Object> getExtendedCompanySnapshot(String url) {
+    public List<Object> getExtendedCompanySnapshot(String url, String stockCode) {
         return null;
     }
 }
