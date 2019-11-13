@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
+import si.inspirited.error.UnexpectedReceivedDataFormatException;
 import si.inspirited.service.ICollectorService;
 import si.inspirited.service.impl.CollectorService;
 
@@ -31,6 +32,7 @@ public class CollectorServiceTest {
     Environment env;
 
     private final String MOCK_DATA_AS_ARRAY = "[{'json':'test data'},{'exit' : '0'}]";
+    private final String OBVIOUSLY_INCORRECT_DATA = "['unstructured json}, test data'{]exit : 1";
 
     @Test
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
@@ -46,7 +48,7 @@ public class CollectorServiceTest {
         CollectorService instance = new CollectorService();
         JSONArray res = new JSONArray();
         try {
-            res = instance.readJsonFromInputStream(mockInputStream());
+            res = instance.readJsonFromInputStream(mockInputStream(MOCK_DATA_AS_ARRAY));
         }catch(IOException e) { e.printStackTrace(); }
         int etalonLength = MOCK_DATA_AS_ARRAY.split(",").length;
         assertEquals(etalonLength, res.length());
@@ -58,7 +60,15 @@ public class CollectorServiceTest {
         }
     }
 
-    private InputStream mockInputStream() {
-        return new ByteArrayInputStream(MOCK_DATA_AS_ARRAY.getBytes());
+    @Test(expected = UnexpectedReceivedDataFormatException.class)
+    public void feedObviouslyIncorrectDataIntoReadJsonFromInputStream_whenThrowsUnexpectedDataFormatException_thenCorrect() {
+        CollectorService instance = new CollectorService();
+        try {
+            instance.readJsonFromInputStream(mockInputStream(OBVIOUSLY_INCORRECT_DATA));
+        }catch(IOException e) { e.printStackTrace(); }
+    }
+
+    private InputStream mockInputStream(final String dataToSent) {
+        return new ByteArrayInputStream(dataToSent.getBytes());
     }
 }
