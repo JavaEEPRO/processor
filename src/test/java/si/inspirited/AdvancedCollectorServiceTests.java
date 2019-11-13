@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
+import si.inspirited.error.InvalidStockCodeException;
 import si.inspirited.service.IAdvancedCollectorService;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,5 +27,10 @@ public class AdvancedCollectorServiceTests {
     public void getExtendedCompanySnapshot_WhenReceivedObjectIsNotNull_thenCorrect() {
         Object expectedData = advancedCollectorService.getExtendedCompanySnapshot(env.getProperty("url.source.extendedCompanyReview"), STOCK_CODE_STUB);
         assertNotNull(expectedData);
+    }
+
+    @Test(expected = InvalidStockCodeException.class)
+    public void getExtendedCompanySnapshot_withFeedingNullInsteadOfStockCode_whenThrownInvalidStockCodeException_thenCorrect() {
+        advancedCollectorService.getExtendedCompanySnapshot(env.getProperty("url.source.extendedCompanyReview"), null);
     }
 }
