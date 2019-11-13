@@ -20,9 +20,11 @@ public class AdvancedCollectorServiceTests {
     @Autowired
     Environment env;
 
+    final String STOCK_CODE_STUB = "MSFT";
+
     @Test
     public void getExtendedCompanySnapshot_WhenReceivedObjectIsNotNull_thenCorrect() {
-        Object expectedData = advancedCollectorService.getExtendedCompanySnapshot(env.getProperty("url.source.extendedCompanyReview"));
+        Object expectedData = advancedCollectorService.getExtendedCompanySnapshot(env.getProperty("url.source.extendedCompanyReview"), STOCK_CODE_STUB);
         assertNotNull(expectedData);
     }
 }
