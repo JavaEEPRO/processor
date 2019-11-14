@@ -10,9 +10,11 @@ import si.inspirited.persistence.dao.QuotationRepository;
 import si.inspirited.persistence.model.Quotation;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,7 +36,35 @@ public class QuotationRepositoryTests {
         assertEquals(id, queriedFromRepoQuotation.getId());
     }
 
-    Quotation getStubQuotation() {
+    @Test
+    public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByLatestPrice_thenCorrect() {
+        List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
+        List<Quotation> quotationsBeenQueried = quotationRepository.findTop5();
+        assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
+        for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
+            Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getLatestPrice();
+            Double nextQuotationLatestPrice = quotationsBeenQueried.get( i + 1 ).getLatestPrice();
+            assertTrue(thisQuotationLatestPrice > nextQuotationLatestPrice);
+        }
+    }
+
+    //
+    private List<Quotation> storeAndGetCoupleQuotations() {
+        List<Quotation> res = new ArrayList<>();
+        for (int i = 0; i < 12; i++) {
+            Quotation nextQuotation = getStubQuotation();
+            Random random = new Random();
+            Double latestPrice = nextQuotation.getLatestPrice() * random.nextDouble();
+            Double changePercent = nextQuotation.getChangePercent() * random.nextDouble();
+            nextQuotation.setLatestPrice(latestPrice);
+            nextQuotation.setChangePercent(changePercent);
+            nextQuotation = quotationRepository.save(nextQuotation);
+            res.add(nextQuotation);
+        }
+        return res;
+    }
+
+    private Quotation getStubQuotation() {
         Quotation res = new Quotation();
         res.setSymbol("MRCY");
         res.setCompanyName("Microsauce");
