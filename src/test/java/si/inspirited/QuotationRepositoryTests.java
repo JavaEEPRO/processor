@@ -23,6 +23,8 @@ public class QuotationRepositoryTests {
     @Autowired
     QuotationRepository quotationRepository;
 
+    private final Integer DOZEN = 12;
+
     @Test
     public void pushQuotationToRepo_ifCouldFindItStored_thenCorrect() {
         Quotation quotationForPush = getStubQuotation();
@@ -51,7 +53,7 @@ public class QuotationRepositoryTests {
     @Test
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedDescendingByChangePercent_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
-        PageRequest pageRequest = PageRequest.of(0, 5);
+        PageRequest pageRequest = PageRequest.of(0, DOZEN);
         Page<Quotation> quotationsBeenQueried = quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.getTotalElements());
         List<Quotation> listOfQuotationsBeenQueried = quotationsBeenQueried.getContent();
@@ -70,7 +72,7 @@ public class QuotationRepositoryTests {
     //
     private List<Quotation> storeAndGetCoupleQuotations() {
         List<Quotation> res = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < DOZEN; i++) {
             Quotation nextQuotation = getStubQuotation();
             Random random = new Random();
             Double latestPrice = nextQuotation.getLatestPrice() * random.nextDouble();
