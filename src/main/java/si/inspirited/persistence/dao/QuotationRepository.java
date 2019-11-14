@@ -9,8 +9,8 @@ import java.util.List;
 public interface QuotationRepository extends JpaRepository<Quotation, Long> {
 
     @Query("select q from Quotation q order by latestPrice desc")
-    List<Quotation> findTop5();
+    List<Quotation> findTopOrderedByLatestPrice();
 
     @Query("select q from Quotation q order by changePercent asc")
-    List<Quotation> findLast5();
+    List<Quotation> findLastOrderedDescByChangePercent();
 }

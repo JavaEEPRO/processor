@@ -37,7 +37,7 @@ public class QuotationRepositoryTests {
     @Test
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByLatestPrice_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
-        List<Quotation> quotationsBeenQueried = quotationRepository.findTop5();
+        List<Quotation> quotationsBeenQueried = quotationRepository.findTopOrderedByLatestPrice();
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
         for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
             Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getLatestPrice();
@@ -49,7 +49,7 @@ public class QuotationRepositoryTests {
     @Test
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedDescendingByChangePercent_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
-        List<Quotation> quotationsBeenQueried = quotationRepository.findLast5();
+        List<Quotation> quotationsBeenQueried = quotationRepository.findLastOrderedDescByChangePercent();
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
         for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
             Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getChangePercent();
