@@ -11,6 +11,7 @@ import si.inspirited.service.IQuotationService;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -50,6 +51,7 @@ public class QuotationServiceIntegrationTests {
             Double nextQuotationLatestPrice = listQuotationsBeenQueried.get( i + 1 ).getChangePercent();
             assertTrue(thisQuotationLatestPrice < nextQuotationLatestPrice);
         }
+        assertTrue(listQuotationsBeenQueried.stream().max(Comparator.comparingDouble(Quotation::getChangePercent)).get().getChangePercent() <= quotationsBeenAdded.stream().max(Comparator.comparingDouble(Quotation::getChangePercent)).get().getChangePercent());
     }
 
     //
