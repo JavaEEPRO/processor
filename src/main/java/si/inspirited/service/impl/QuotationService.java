@@ -22,13 +22,19 @@ public class QuotationService implements IQuotationService {
     }
 
     @Override
-    public List<Quotation> getTop5QuotationsOrderedByLatestPrice() {
-        return quotationRepository.findTopOrderedByLatestPrice();
+    public Page<Quotation> getTop5QuotationsOrderedByLatestPrice() {
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return quotationRepository.findTopOrderedByLatestPrice(pageRequest);
     }
 
     @Override
     public Page<Quotation> getLast5QuotationsOrderedDescByChangePercent() {
         PageRequest pageRequest = PageRequest.of(0, 5);
         return quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
+    }
+
+    @Override
+    public void refreshQuotationStorage() {
+        quotationRepository.deleteAll();
     }
 }

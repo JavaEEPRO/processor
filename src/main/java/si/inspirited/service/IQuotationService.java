@@ -9,7 +9,9 @@ public interface IQuotationService {
 
     Quotation addQuotation(Quotation quotation);
 
-    List<Quotation> getTop5QuotationsOrderedByLatestPrice();
+    Page<Quotation> getTop5QuotationsOrderedByLatestPrice();
 
     Page<Quotation> getLast5QuotationsOrderedDescByChangePercent();
+
+    void refreshQuotationStorage();
 }

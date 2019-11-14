@@ -41,7 +41,9 @@ public class QuotationRepositoryTests {
     @Test
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByLatestPrice_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
-        List<Quotation> quotationsBeenQueried = quotationRepository.findTopOrderedByLatestPrice();
+        PageRequest pageRequest = PageRequest.of(0, DOZEN);
+        Page<Quotation> pageQuotationsBeenQueried = quotationRepository.findTopOrderedByLatestPrice(pageRequest);
+        List<Quotation> quotationsBeenQueried = pageQuotationsBeenQueried.getContent();
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
         for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
             Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getLatestPrice();

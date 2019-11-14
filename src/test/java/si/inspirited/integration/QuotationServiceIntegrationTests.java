@@ -1,5 +1,6 @@
 package si.inspirited.integration;
 
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class QuotationServiceIntegrationTests {
         assertNotEquals(id, null);
         quotationReturned.setId(null);
         assertEquals(quotationToSave, quotationReturned);
-        List<Quotation> receivedList = quotationService.getTop5QuotationsOrderedByLatestPrice();
+        Page<Quotation> receivedPage = quotationService.getTop5QuotationsOrderedByLatestPrice();
+        List<Quotation> receivedList = receivedPage.getContent();
         assertEquals(1, receivedList.size());
         Quotation quotationQueried = receivedList.get(0);
         quotationQueried.setId(null);
@@ -47,11 +49,30 @@ public class QuotationServiceIntegrationTests {
         assertEquals(5, quotationsBeenQueried.getContent().size());
         List<Quotation> listQuotationsBeenQueried = quotationsBeenQueried.getContent();
         for (int i = 0; i < listQuotationsBeenQueried.size() - 1; i++) {
-            Double thisQuotationLatestPrice = listQuotationsBeenQueried.get( i ).getChangePercent();
-            Double nextQuotationLatestPrice = listQuotationsBeenQueried.get( i + 1 ).getChangePercent();
-            assertTrue(thisQuotationLatestPrice < nextQuotationLatestPrice);
+            Double thisQuotationChangePercent = listQuotationsBeenQueried.get( i ).getChangePercent();
+            Double nextQuotationChangePercent = listQuotationsBeenQueried.get( i + 1 ).getChangePercent();
+            assertTrue(thisQuotationChangePercent < nextQuotationChangePercent);
         }
         assertTrue(listQuotationsBeenQueried.stream().max(Comparator.comparingDouble(Quotation::getChangePercent)).get().getChangePercent() <= quotationsBeenAdded.stream().max(Comparator.comparingDouble(Quotation::getChangePercent)).get().getChangePercent());
+    }
+
+    @Test
+    public void addDozenQuotations_whenReceivedPageHasOnlyTopFiveOrderedByLatestPrice_thenCorrect() {
+        List<Quotation> quotationsBeenAdded = addAndGetDozenOfQuotation();
+        Page<Quotation> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByLatestPrice();
+        assertEquals(5, quotationsBeenQueried.getContent().size());
+        List<Quotation> listQuotationsBeenQueried = quotationsBeenQueried.getContent();
+        for (int i = 0; i < listQuotationsBeenQueried.size() - 1; i++) {
+            Double thisQuotationLatestPrice = listQuotationsBeenQueried.get( i ).getLatestPrice();
+            Double nextQuotationLatestPrice = listQuotationsBeenQueried.get( i + 1 ).getLatestPrice();
+            assertTrue(thisQuotationLatestPrice > nextQuotationLatestPrice);
+        }
+        assertTrue(listQuotationsBeenQueried.stream().min(Comparator.comparingDouble(Quotation::getLatestPrice)).get().getLatestPrice() >= quotationsBeenAdded.stream().min(Comparator.comparingDouble(Quotation::getLatestPrice)).get().getLatestPrice());
+    }
+
+    @After
+    public void refreshQuotationStorage() {
+        quotationService.refreshQuotationStorage();
     }
 
     //
