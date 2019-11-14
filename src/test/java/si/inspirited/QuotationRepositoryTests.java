@@ -48,6 +48,18 @@ public class QuotationRepositoryTests {
         }
     }
 
+    @Test
+    public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedDescendingByChangePercent_thenCorrect() {
+        List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
+        List<Quotation> quotationsBeenQueried = quotationRepository.findLast5();
+        assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
+        for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
+            Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getChangePercent();
+            Double nextQuotationLatestPrice = quotationsBeenQueried.get( i + 1 ).getChangePercent();
+            assertTrue(thisQuotationLatestPrice < nextQuotationLatestPrice);
+        }
+    }
+
     //
     private List<Quotation> storeAndGetCoupleQuotations() {
         List<Quotation> res = new ArrayList<>();
