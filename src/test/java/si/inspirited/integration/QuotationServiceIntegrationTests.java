@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit4.SpringRunner;
 import si.inspirited.persistence.model.Quotation;
 import si.inspirited.service.IQuotationService;
@@ -41,11 +42,12 @@ public class QuotationServiceIntegrationTests {
     @Test
     public void addDozenQuotations_whenReceivedListHasOnlyLastFiveQuotationsOrderedByChangePercentDesc_thenCorrect() {
         List<Quotation> quotationsBeenAdded = addAndGetDozenOfQuotation();
-        List<Quotation> quotationsBeenQueried = quotationService.getLast5QuotationsOrderedDescByChangePercent();
-        assertEquals(5, quotationsBeenQueried.size());
-        for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
-            Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getChangePercent();
-            Double nextQuotationLatestPrice = quotationsBeenQueried.get( i + 1 ).getChangePercent();
+        Page<Quotation> quotationsBeenQueried = quotationService.getLast5QuotationsOrderedDescByChangePercent();
+        assertEquals(5, quotationsBeenQueried.getContent().size());
+        List<Quotation> listQuotationsBeenQueried = quotationsBeenQueried.getContent();
+        for (int i = 0; i < listQuotationsBeenQueried.size() - 1; i++) {
+            Double thisQuotationLatestPrice = listQuotationsBeenQueried.get( i ).getChangePercent();
+            Double nextQuotationLatestPrice = listQuotationsBeenQueried.get( i + 1 ).getChangePercent();
             assertTrue(thisQuotationLatestPrice < nextQuotationLatestPrice);
         }
     }
@@ -53,6 +55,7 @@ public class QuotationServiceIntegrationTests {
     //
     private List<Quotation> addAndGetDozenOfQuotation() {
         List<Quotation> res = new ArrayList<>();
+
         for (int i = 0; i < 12; i++) {
             Quotation nextQuotation = getStubQuotation();
             Random random = new Random();

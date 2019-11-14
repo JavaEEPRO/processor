@@ -1,6 +1,8 @@
 package si.inspirited.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import si.inspirited.persistence.dao.QuotationRepository;
 import si.inspirited.persistence.model.Quotation;
@@ -25,7 +27,8 @@ public class QuotationService implements IQuotationService {
     }
 
     @Override
-    public List<Quotation> getLast5QuotationsOrderedDescByChangePercent() {
-        return null;
+    public Page<Quotation> getLast5QuotationsOrderedDescByChangePercent() {
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
     }
 }

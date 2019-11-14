@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import si.inspirited.persistence.dao.QuotationRepository;
 import si.inspirited.persistence.model.Quotation;
@@ -49,11 +51,13 @@ public class QuotationRepositoryTests {
     @Test
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedDescendingByChangePercent_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
-        List<Quotation> quotationsBeenQueried = quotationRepository.findLastOrderedDescByChangePercent();
-        assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
-        for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
-            Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getChangePercent();
-            Double nextQuotationLatestPrice = quotationsBeenQueried.get( i + 1 ).getChangePercent();
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Page<Quotation> quotationsBeenQueried = quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
+        assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.getTotalElements());
+        List<Quotation> listOfQuotationsBeenQueried = quotationsBeenQueried.getContent();
+        for (int i = 0; i < quotationsBeenQueried.getTotalElements() - 1; i++) {
+            Double thisQuotationLatestPrice = listOfQuotationsBeenQueried.get( i ).getChangePercent();
+            Double nextQuotationLatestPrice = listOfQuotationsBeenQueried.get( i + 1 ).getChangePercent();
             assertTrue(thisQuotationLatestPrice < nextQuotationLatestPrice);
         }
     }

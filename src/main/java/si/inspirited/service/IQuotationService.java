@@ -1,5 +1,6 @@
 package si.inspirited.service;
 
+import org.springframework.data.domain.Page;
 import si.inspirited.persistence.model.Quotation;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface IQuotationService {
 
     List<Quotation> getTop5QuotationsOrderedByLatestPrice();
 
-    List<Quotation> getLast5QuotationsOrderedDescByChangePercent();
+    Page<Quotation> getLast5QuotationsOrderedDescByChangePercent();
 }
