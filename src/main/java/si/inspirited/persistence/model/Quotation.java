@@ -3,6 +3,7 @@ package si.inspirited.persistence.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name="quotation")
@@ -410,5 +411,21 @@ public class Quotation implements Serializable {
 
     public void setUsMarketOpen(boolean usMarketOpen) {
         isUsMarketOpen = usMarketOpen;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quotation quotation = (Quotation) o;
+        return isUsMarketOpen == quotation.isUsMarketOpen &&
+                Objects.equals(id, quotation.id) &&
+                Objects.equals(symbol, quotation.symbol) &&
+                Objects.equals(companyName, quotation.companyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, symbol, companyName);
     }
 }
