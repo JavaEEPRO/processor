@@ -10,7 +10,7 @@ import java.util.List;
 public class QuotationService implements IQuotationService {
 
     @Override
-    public Quotation addQuotation() {
+    public Quotation addQuotation(Quotation quotation) {
         return null;
     }
 

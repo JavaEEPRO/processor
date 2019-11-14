@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IQuotationService {
 
-    Quotation addQuotation();
+    Quotation addQuotation(Quotation quotation);
 
     List<Quotation> getTop5QuotationsOrderedByLatestPrice();
 
