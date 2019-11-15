@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
+import si.inspirited.dto.SnapshotDto;
 import si.inspirited.error.UnexpectedReceivedDataFormatException;
 import si.inspirited.service.ICollectorService;
 import si.inspirited.service.impl.CollectorService;
@@ -38,7 +39,7 @@ public class CollectorServiceTests {
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
         String url = env.getProperty("url.source.allCompaniesReview");
         String token = env.getProperty("token");
-        List<Object> expectedDataFromInputStream = collectorService.getSnapshot(url, token);
+        List<SnapshotDto> expectedDataFromInputStream = (List<SnapshotDto>) collectorService.getSnapshot(url, token);
 
         assertNotNull(expectedDataFromInputStream);
         assertFalse(expectedDataFromInputStream.isEmpty());

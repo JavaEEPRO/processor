@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import si.inspirited.dto.SnapshotDto;
 import si.inspirited.error.UnexpectedReceivedDataFormatException;
 import si.inspirited.service.ICollectorService;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class CollectorService implements ICollectorService {
 
     @Override
-    public List<Object> getSnapshot(final String url, final String token) {
+    public List<? extends Object> getSnapshot(final String url, final String token) {
         final String completeUrl = url + token;
         JSONArray json = new JSONArray();
         try {
