@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
-import si.inspirited.dto.SnapshotDto;
+import si.inspirited.dto.RowDto;
 import si.inspirited.error.UnexpectedReceivedDataFormatException;
 import si.inspirited.service.ICollectorService;
 import si.inspirited.service.impl.CollectorService;
@@ -15,9 +15,6 @@ import si.inspirited.service.impl.CollectorService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -39,7 +36,7 @@ public class CollectorServiceTests {
     public void getSnapshot_whenReceivedListIsNotEmpty_thenCorrect() {
         String url = env.getProperty("url.source.allCompaniesReview");
         String token = env.getProperty("token");
-        List<SnapshotDto> expectedDataFromInputStream = (List<SnapshotDto>) collectorService.getSnapshot(url, token);
+        List<RowDto> expectedDataFromInputStream = (List<RowDto>) collectorService.getSnapshot(url, token);
 
         assertNotNull(expectedDataFromInputStream);
         assertFalse(expectedDataFromInputStream.isEmpty());

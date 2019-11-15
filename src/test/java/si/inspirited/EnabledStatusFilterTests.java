@@ -1,18 +1,14 @@
 package si.inspirited;
 
-import javafx.beans.binding.BooleanBinding;
 import org.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import si.inspirited.dto.SnapshotDto;
+import si.inspirited.dto.RowDto;
 import si.inspirited.service.IEnabledStatusFilter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,10 +28,10 @@ public class EnabledStatusFilterTests {
         JSONArray dataAsJson = new JSONArray(mockData);
         List<Object> toFeed = dataAsJson.toList();
 
-        List<SnapshotDto> res = enabledStatusFilter.getEnabled(toFeed);
+        List<RowDto> res = enabledStatusFilter.getEnabled(toFeed);
         assertNotNull(res);
         assertTrue(res.size() < toFeed.size());
-        for (SnapshotDto snapshot : res) {
+        for (RowDto snapshot : res) {
             assertTrue(snapshot::isEnabled);
         }
 

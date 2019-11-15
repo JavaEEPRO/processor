@@ -2,7 +2,7 @@ package si.inspirited.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import si.inspirited.dto.SnapshotDto;
+import si.inspirited.dto.RowDto;
 import si.inspirited.error.InvalidStockCodeException;
 import si.inspirited.service.IAdvancedCollectorService;
 import si.inspirited.service.ICollectorService;
@@ -20,7 +20,7 @@ public class AdvancedCollectorService implements IAdvancedCollectorService {
         if (stockCode == null || "".equals(stockCode.trim())) { throw new InvalidStockCodeException(); }
         String formattedUrl = url != null ? url : "";
         formattedUrl =  formattedUrl.replace("{stockCode}", stockCode);
-        List<SnapshotDto> data = (List<SnapshotDto>)collectorService.getSnapshot(formattedUrl, token);
+        List<RowDto> data = (List<RowDto>)collectorService.getSnapshot(formattedUrl, token);
         if (data.size() == 1) { return data.get(0); }
         return null;
     }

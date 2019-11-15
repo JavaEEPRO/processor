@@ -2,7 +2,7 @@ package si.inspirited.dto;
 
 import java.time.LocalDate;
 
-public class SnapshotDto {
+public class RowDto {
 
     private String symbol;
     private boolean enabled;

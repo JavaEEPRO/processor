@@ -1,10 +1,10 @@
 package si.inspirited.service;
 
-import si.inspirited.dto.SnapshotDto;
+import si.inspirited.dto.RowDto;
 
 import java.util.List;
 
 public interface IEnabledStatusFilter {
 
-    List<SnapshotDto> getEnabled(List<? extends Object> toFilter);
+    List<RowDto> getEnabled(List<? extends Object> toFilter);
 }

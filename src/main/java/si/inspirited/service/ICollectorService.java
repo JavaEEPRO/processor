@@ -1,7 +1,5 @@
 package si.inspirited.service;
 
-import si.inspirited.dto.SnapshotDto;
-
 import java.util.List;
 
 public interface ICollectorService {
