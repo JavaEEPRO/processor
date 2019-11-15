@@ -1,6 +1,7 @@
 package si.inspirited.dto;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class QuotationDto {
 
@@ -403,5 +404,22 @@ public class QuotationDto {
 
     public void setUsMarketOpen(boolean usMarketOpen) {
         isUsMarketOpen = usMarketOpen;
+    }
+
+    //
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuotationDto that = (QuotationDto) o;
+        return isUsMarketOpen == that.isUsMarketOpen &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(symbol, that.symbol) &&
+                Objects.equals(companyName, that.companyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, symbol, companyName);
     }
 }
