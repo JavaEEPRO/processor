@@ -39,7 +39,7 @@ public class QuotationServiceIntegrationTests {
         assertNotEquals(id, null);
         //quotationReturned.setId(null);
         assertEquals(daoToDtoConverter.getDto(quotationToSave), quotationReturned);
-        Page<QuotationDto> receivedPage = quotationService.getTop5QuotationsOrderedByLatestPrice();
+        Page<QuotationDto> receivedPage = quotationService.getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
         List<QuotationDto> receivedList = receivedPage.getContent();
         assertEquals(1, receivedList.size());
         QuotationDto quotationQueried = receivedList.get(0);
@@ -64,7 +64,7 @@ public class QuotationServiceIntegrationTests {
     @Test
     public void addDozenQuotations_whenReceivedPageHasOnlyTopFiveOrderedByLatestPrice_thenCorrect() {
         List<Quotation> quotationsBeenAdded = addAndGetDozenOfQuotation();
-        Page<QuotationDto> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByLatestPrice();
+        Page<QuotationDto> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
         assertEquals(5, quotationsBeenQueried.getContent().size());
         List<QuotationDto> listQuotationsBeenQueried = quotationsBeenQueried.getContent();
         for (int i = 0; i < listQuotationsBeenQueried.size() - 1; i++) {

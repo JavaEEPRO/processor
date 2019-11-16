@@ -29,7 +29,7 @@ public class QuotationService implements IQuotationService {
     }
 
     @Override
-    public Page<QuotationDto> getTop5QuotationsOrderedByLatestPrice() {
+    public Page<QuotationDto> getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName() {
         PageRequest pageRequest = PageRequest.of(0, 5);
         Page<Quotation> quotationDao = quotationRepository.findTopOrderedByLatestPrice(pageRequest);
         List<QuotationDto> resultList = new ArrayList<>();
