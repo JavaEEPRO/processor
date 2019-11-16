@@ -53,9 +53,9 @@ public class QuotationServiceIntegrationTests {
         for (int i = 0; i < listQuotationsBeenQueried.size() - 1; i++) {
             Double thisQuotationChangePercent = listQuotationsBeenQueried.get( i ).getChangePercent();
             Double nextQuotationChangePercent = listQuotationsBeenQueried.get( i + 1 ).getChangePercent();
-            assertTrue(thisQuotationChangePercent < nextQuotationChangePercent);
+            assertTrue(thisQuotationChangePercent > nextQuotationChangePercent);
         }
-        assertTrue(listQuotationsBeenQueried.stream().max(Comparator.comparingDouble(QuotationDto::getChangePercent)).get().getChangePercent() <= quotationsBeenAdded.stream().max(Comparator.comparingDouble(Quotation::getChangePercent)).get().getChangePercent());
+        assertTrue(listQuotationsBeenQueried.stream().max(Comparator.comparingDouble(QuotationDto::getChangePercent)).get().getChangePercent() >= quotationsBeenAdded.stream().max(Comparator.comparingDouble(Quotation::getChangePercent)).get().getChangePercent());
     }
 
     @Test
