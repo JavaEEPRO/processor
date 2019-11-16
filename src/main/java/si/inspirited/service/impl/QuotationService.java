@@ -54,7 +54,7 @@ public class QuotationService implements IQuotationService {
     }
 
     @Override
-    public Page<QuotationDto> getLast5QuotationsOrderedDescByChangePercent() {
+    public Page<QuotationDto> getTop5QuotationsOrderedByChangePercent() {
         PageRequest pageRequest = PageRequest.of(0, 5);
         Page<Quotation> quotationDao = quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
         List<QuotationDto> resultList = new ArrayList<>();

@@ -12,7 +12,7 @@ public interface IQuotationService {
 
     Page<QuotationDto> getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
 
-    Page<QuotationDto> getLast5QuotationsOrderedDescByChangePercent();
+    Page<QuotationDto> getTop5QuotationsOrderedByChangePercent();
 
     void refreshQuotationStorage();
 }
