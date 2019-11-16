@@ -53,7 +53,7 @@ public class QuotationRepositoryTests {
     }
 
     @Test
-    public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedDescendingByChangePercent_thenCorrect() {
+    public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByChangePercent_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
         PageRequest pageRequest = PageRequest.of(0, DOZEN);
         Page<Quotation> quotationsBeenQueried = quotationRepository.findTopOrderedByChangePercent(pageRequest);
