@@ -12,7 +12,6 @@ import si.inspirited.service.IQuotationService;
 import si.inspirited.util.IQuotationDaoToDtoConverter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +44,6 @@ public class QuotationService implements IQuotationService {
         List<QuotationDto> sortedByCompanyName = toSortByCompanyName.stream().
                                                     sorted(Comparator.comparing(QuotationDto::getCompanyName)).
                                                     collect(Collectors.toList());
-    //sort(Comparator.comparing((QuotationDto::getCompanyName)));
         for (int i = 1; i < resultList.size(); i++) {
             resultList.remove(i);
             resultList.add(i, sortedByCompanyName.get(i - 1));
@@ -56,7 +54,7 @@ public class QuotationService implements IQuotationService {
     @Override
     public Page<QuotationDto> getTop5QuotationsOrderedByChangePercent() {
         PageRequest pageRequest = PageRequest.of(0, 5);
-        Page<Quotation> quotationDao = quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
+        Page<Quotation> quotationDao = quotationRepository.findTopOrderedByChangePercent(pageRequest);
         List<QuotationDto> resultList = new ArrayList<>();
         quotationDao.stream().forEach((dao) -> resultList.add(daoToDtoConverter.getDto(dao)));
         return new PageImpl<>(resultList);

@@ -56,7 +56,7 @@ public class QuotationRepositoryTests {
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedDescendingByChangePercent_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
         PageRequest pageRequest = PageRequest.of(0, DOZEN);
-        Page<Quotation> quotationsBeenQueried = quotationRepository.findLastOrderedDescByChangePercent(pageRequest);
+        Page<Quotation> quotationsBeenQueried = quotationRepository.findTopOrderedByChangePercent(pageRequest);
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.getTotalElements());
         List<Quotation> listOfQuotationsBeenQueried = quotationsBeenQueried.getContent();
         for (int i = 0; i < quotationsBeenQueried.getTotalElements() - 1; i++) {
