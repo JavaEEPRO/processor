@@ -45,7 +45,7 @@ public class QuotationServiceIntegrationTests {
     }
 
     @Test
-    public void addDozenQuotations_whenReceivedListHasOnlyLastFiveQuotationsOrderedByChangePercentDesc_thenCorrect() {
+    public void addDozenQuotations_whenReceivedListHasOnlyTopFiveQuotationsOrderedByChangePercent_thenCorrect() {
         List<Quotation> quotationsBeenAdded = addAndGetDozenOfQuotation();
         Page<QuotationDto> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByChangePercent();
         assertEquals(5, quotationsBeenQueried.getContent().size());
