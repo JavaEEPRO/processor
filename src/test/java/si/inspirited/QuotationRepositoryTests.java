@@ -62,7 +62,7 @@ public class QuotationRepositoryTests {
         for (int i = 0; i < quotationsBeenQueried.getTotalElements() - 1; i++) {
             Double thisQuotationLatestPrice = listOfQuotationsBeenQueried.get( i ).getChangePercent();
             Double nextQuotationLatestPrice = listOfQuotationsBeenQueried.get( i + 1 ).getChangePercent();
-            assertTrue(thisQuotationLatestPrice < nextQuotationLatestPrice);
+            assertTrue(thisQuotationLatestPrice > nextQuotationLatestPrice);
         }
     }
 
