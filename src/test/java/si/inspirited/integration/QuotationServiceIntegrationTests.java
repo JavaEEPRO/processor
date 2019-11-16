@@ -73,7 +73,7 @@ public class QuotationServiceIntegrationTests {
             assertTrue(thisQuotationLatestPrice < firstQuotationLatestPriceExpectedToBeTheHighest);
         }
             // 1.2 among all in full list, that was added
-        for (int i = 0; i < quotationsBeenAdded.size() - 1; i++) {
+        for (int i = 0; i < quotationsBeenAdded.size(); i++) {
             Double thisQuotationLatestPrice = quotationsBeenAdded.get( i ).getLatestPrice();
             assertTrue(thisQuotationLatestPrice <= firstQuotationLatestPriceExpectedToBeTheHighest);
         }
@@ -81,7 +81,7 @@ public class QuotationServiceIntegrationTests {
         for (int i = 1; i < listQuotationsBeenQueried.size() - 1; i++) {
             QuotationDto thisQuotation = listQuotationsBeenQueried.get(i);
             QuotationDto nextQuotation = listQuotationsBeenQueried.get(i + 1);
-            assertTrue(thisQuotation.getCompanyName().compareTo(nextQuotation.getCompanyName()) >= 0);
+            assertTrue(thisQuotation.getCompanyName().compareTo(nextQuotation.getCompanyName()) <= 0);
         }
         //assertTrue(listQuotationsBeenQueried.stream().min(Comparator.comparingDouble(QuotationDto::getLatestPrice)).get().getLatestPrice() >= quotationsBeenAdded.stream().min(Comparator.comparingDouble(Quotation::getLatestPrice)).get().getLatestPrice());
     }

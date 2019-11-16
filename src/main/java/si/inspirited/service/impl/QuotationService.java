@@ -12,7 +12,10 @@ import si.inspirited.service.IQuotationService;
 import si.inspirited.util.IQuotationDaoToDtoConverter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuotationService implements IQuotationService {
@@ -34,6 +37,19 @@ public class QuotationService implements IQuotationService {
         Page<Quotation> quotationDao = quotationRepository.findTopOrderedByLatestPrice(pageRequest);
         List<QuotationDto> resultList = new ArrayList<>();
         quotationDao.stream().forEach((dao) -> resultList.add(daoToDtoConverter.getDto(dao)));
+        List<QuotationDto> toSortByCompanyName = new ArrayList<>(5);
+
+        for (int i = 1; i < resultList.size(); i++) {
+            toSortByCompanyName.add(resultList.get(i));
+        }
+        List<QuotationDto> sortedByCompanyName = toSortByCompanyName.stream().
+                                                    sorted(Comparator.comparing(QuotationDto::getCompanyName)).
+                                                    collect(Collectors.toList());
+    //sort(Comparator.comparing((QuotationDto::getCompanyName)));
+        for (int i = 1; i < resultList.size(); i++) {
+            resultList.remove(i);
+            resultList.add(i, sortedByCompanyName.get(i - 1));
+        }
         return new PageImpl<>(resultList);
     }
 
