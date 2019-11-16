@@ -13,10 +13,7 @@ import si.inspirited.service.IQuotationService;
 import si.inspirited.util.IQuotationDaoToDtoConverter;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,17 +59,31 @@ public class QuotationServiceIntegrationTests {
     }
 
     @Test
-    public void addDozenQuotations_whenReceivedPageHasOnlyTopFiveOrderedByLatestPrice_thenCorrect() {
+    public void addDozenQuotations_whenReceivedPageHasOnlyTopFiveOrderedByLatestPrice4LastOfThemByCompanyName_thenCorrect() {
         List<Quotation> quotationsBeenAdded = addAndGetDozenOfQuotation();
         Page<QuotationDto> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
         assertEquals(5, quotationsBeenQueried.getContent().size());
         List<QuotationDto> listQuotationsBeenQueried = quotationsBeenQueried.getContent();
-        for (int i = 0; i < listQuotationsBeenQueried.size() - 1; i++) {
+        // 1. first Quotation should have max value
+        QuotationDto firstQuotation = listQuotationsBeenQueried.get(0);
+        Double firstQuotationLatestPriceExpectedToBeTheHighest = firstQuotation.getLatestPrice();
+            // 1.1 among others in queried list
+        for (int i = 1; i < listQuotationsBeenQueried.size() - 1; i++) {
             Double thisQuotationLatestPrice = listQuotationsBeenQueried.get( i ).getLatestPrice();
-            Double nextQuotationLatestPrice = listQuotationsBeenQueried.get( i + 1 ).getLatestPrice();
-            assertTrue(thisQuotationLatestPrice > nextQuotationLatestPrice);
+            assertTrue(thisQuotationLatestPrice < firstQuotationLatestPriceExpectedToBeTheHighest);
         }
-        assertTrue(listQuotationsBeenQueried.stream().min(Comparator.comparingDouble(QuotationDto::getLatestPrice)).get().getLatestPrice() >= quotationsBeenAdded.stream().min(Comparator.comparingDouble(Quotation::getLatestPrice)).get().getLatestPrice());
+            // 1.2 among all in full list, that was added
+        for (int i = 0; i < quotationsBeenAdded.size() - 1; i++) {
+            Double thisQuotationLatestPrice = quotationsBeenAdded.get( i ).getLatestPrice();
+            assertTrue(thisQuotationLatestPrice <= firstQuotationLatestPriceExpectedToBeTheHighest);
+        }
+        // 2. four last Quotations should be sorted by companyName
+        for (int i = 1; i < listQuotationsBeenQueried.size() - 1; i++) {
+            QuotationDto thisQuotation = listQuotationsBeenQueried.get(i);
+            QuotationDto nextQuotation = listQuotationsBeenQueried.get(i + 1);
+            assertTrue(thisQuotation.getCompanyName().compareTo(nextQuotation.getCompanyName()) >= 0);
+        }
+        //assertTrue(listQuotationsBeenQueried.stream().min(Comparator.comparingDouble(QuotationDto::getLatestPrice)).get().getLatestPrice() >= quotationsBeenAdded.stream().min(Comparator.comparingDouble(Quotation::getLatestPrice)).get().getLatestPrice());
     }
 
     @After
@@ -89,8 +100,10 @@ public class QuotationServiceIntegrationTests {
             Random random = new Random();
             Double latestPrice = nextQuotation.getLatestPrice() * random.nextDouble();
             Double changePercent = nextQuotation.getChangePercent() * random.nextDouble();
+            String companyName = nextQuotation.getCompanyName().substring(i);
             nextQuotation.setLatestPrice(latestPrice);
             nextQuotation.setChangePercent(changePercent);
+            nextQuotation.setCompanyName(companyName);
             QuotationDto nextQuotationDto = quotationService.addQuotation(nextQuotation);
             nextQuotation.setId(nextQuotationDto.getId());
             res.add(nextQuotation);
@@ -101,7 +114,7 @@ public class QuotationServiceIntegrationTests {
     private Quotation getStubQuotation() {
         Quotation res = new Quotation();
         res.setSymbol("PRFCT");
-        res.setCompanyName("Microsouth");
+        res.setCompanyName("MicrosouthAlpha");
         res.setPrimaryExchange("PREX");
         res.setCalculationPrice("highest");
         res.setOpen("any time");
