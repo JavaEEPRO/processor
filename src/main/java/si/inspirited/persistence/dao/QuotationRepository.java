@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface QuotationRepository extends JpaRepository<Quotation, Long> {
 
-    @Query("select q from Quotation q order by latestPrice desc")
-    Page<Quotation> findTopOrderedByLatestPrice(Pageable pageable);
+    @Query("select q from Quotation q order by volume desc")
+    Page<Quotation> findTopOrderedByVolume(Pageable pageable);
 
     @Query("select q from Quotation q order by changePercent desc")
     Page<Quotation> findTopOrderedByChangePercent(Pageable pageable);

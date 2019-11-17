@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import si.inspirited.persistence.dao.QuotationRepository;
 import si.inspirited.persistence.model.Quotation;
-import java.time.LocalTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,7 +42,7 @@ public class QuotationRepositoryTests {
     public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByLatestPrice_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
         PageRequest pageRequest = PageRequest.of(0, DOZEN);
-        Page<Quotation> pageQuotationsBeenQueried = quotationRepository.findTopOrderedByLatestPrice(pageRequest);
+        Page<Quotation> pageQuotationsBeenQueried = quotationRepository.findTopOrderedByVolume(pageRequest);
         List<Quotation> quotationsBeenQueried = pageQuotationsBeenQueried.getContent();
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
         for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
