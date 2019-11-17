@@ -430,6 +430,7 @@ public class QuotationDto {
                 ", companyName='" + companyName + '\'' +
                 ", openTime=" + openTime +
                 ", latestPrice=" + latestPrice +
+                ", changePercent=" + changePercent +
                 ", volume=" + volume +
                 ", isUsMarketOpen=" + isUsMarketOpen +
                 '}';
