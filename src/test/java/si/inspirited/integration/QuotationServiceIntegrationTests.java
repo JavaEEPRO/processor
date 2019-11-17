@@ -117,8 +117,8 @@ public class QuotationServiceIntegrationTests {
         res.setCompanyName("MicrosouthAlpha");
         res.setPrimaryExchange("PREX");
         res.setCalculationPrice("highest");
-        res.setOpen("any time");
-        res.setOpenTime(LocalTime.of(01,02, 03, 003));
+        //res.setOpen("any time");
+        res.setOpenTime(1375632L);
         res.setLatestPrice(213.731);
         res.setChangePercent(-0.0007);
         return res;

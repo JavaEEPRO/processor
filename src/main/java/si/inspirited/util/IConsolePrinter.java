@@ -1,8 +1,6 @@
 package si.inspirited.util;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
-public interface IConsolePrinter extends Runnable {
+public interface IConsolePrinter {
 
     void startPrintingConclusions();
 }

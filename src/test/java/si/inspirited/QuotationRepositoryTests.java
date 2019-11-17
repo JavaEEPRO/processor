@@ -93,8 +93,8 @@ public class QuotationRepositoryTests {
         res.setCompanyName("Microsauce");
         res.setPrimaryExchange("PARAUS");
         res.setCalculationPrice("rise");
-        res.setOpen("of course");
-        res.setOpenTime(LocalTime.of(11,12));
+        //res.setOpen("of course");
+        res.setOpenTime(134375L);
         res.setLatestPrice(352.347);
         res.setChangePercent(-0.0004);
         return res;

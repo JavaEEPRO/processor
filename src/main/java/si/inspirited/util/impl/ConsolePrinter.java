@@ -6,7 +6,7 @@ import si.inspirited.service.IQuotationService;
 import si.inspirited.util.IConsolePrinter;
 
 @Component
-public class ConsolePrinter implements IConsolePrinter {
+public class ConsolePrinter implements IConsolePrinter, Runnable {
 
     @Autowired
     IQuotationService quotationService;

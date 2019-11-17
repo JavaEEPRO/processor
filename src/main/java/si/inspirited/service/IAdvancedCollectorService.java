@@ -1,6 +1,8 @@
 package si.inspirited.service;
 
+import si.inspirited.persistence.model.Quotation;
+
 public interface IAdvancedCollectorService {
 
-    Object getExtendedCompanySnapshot(String url, String StockCode, final String token);
+    Quotation getExtendedCompanySnapshot(String url, String StockCode, final String token);
 }
