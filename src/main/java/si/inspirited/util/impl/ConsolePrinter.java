@@ -12,8 +12,9 @@ public class ConsolePrinter implements IConsolePrinter, Runnable {
     IQuotationService quotationService;
 
     @Override
-    public void startPrintingConclusions() {
+    public Runnable startPrintingConclusions() {
         run();
+        return this;
     }
 
     @Override

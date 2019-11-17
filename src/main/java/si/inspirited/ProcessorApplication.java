@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 import si.inspirited.dto.RowDto;
+import si.inspirited.persistence.model.Quotation;
 import si.inspirited.service.IAdvancedCollectorService;
 import si.inspirited.service.ICollectorService;
 import si.inspirited.service.IEnabledStatusFilter;
@@ -42,17 +43,21 @@ public class ProcessorApplication implements CommandLineRunner {
 	}
 	@Override
 	public void run(String... args) throws Exception {
-
-
-
-		while (true) {
-			consolePrinter.startPrintingConclusions();
-			List<RowDto> enabledCompanies = enabledStatusFilter.getEnabled(collectorService.getSnapshot(env.getProperty("url.source.allCompaniesReview"), env.getProperty("token")));
+		ExecutorService executorService = Executors.newFixedThreadPool(10);
+		boolean isPrinterStarted = false;
+		boolean isMainProcessRunning = true;
+		while (isMainProcessRunning) {
+			List<RowDto> enabledCompanies;
+			enabledCompanies = enabledStatusFilter.getEnabled(collectorService.getSnapshot(env.getProperty("url.source.allCompaniesReview"), env.getProperty("token")));
 			for (RowDto company : enabledCompanies) {
-				ExecutorService executorService = Executors.newFixedThreadPool(10);
 				executorService.submit(() -> {
-						quotationService.addQuotation(advancedCollectorService.getExtendedCompanySnapshot(env.getProperty("url.source.extendedCompanyReview"), company.getSymbol(), env.getProperty("token")));
+					Quotation q = advancedCollectorService.getExtendedCompanySnapshot(env.getProperty("url.source.extendedCompanyReview"), company.getSymbol(), env.getProperty("token"));
+					quotationService.addQuotation(q);
 				});
+			}
+			if (!isPrinterStarted) {
+				executorService.submit(consolePrinter.startPrintingConclusions());
+				isPrinterStarted = true;
 			}
 		}
 	}
