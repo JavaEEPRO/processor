@@ -19,7 +19,7 @@ public class ConsolePrinter implements IConsolePrinter, Runnable {
     @Override
     public void run() {
         while(true) {
-            System.out.println(quotationService.getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName());
+            System.out.println(quotationService.getTop5QuotationsOrderedByVolume4LastOfThemByCompanyName());
             System.out.println(quotationService.getTop5QuotationsOrderedByChangePercent());
             try {
                 Thread.sleep(5000);

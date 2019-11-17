@@ -10,7 +10,7 @@ public interface IQuotationService {
 
     QuotationDto addQuotation(Quotation quotation);
 
-    Page<QuotationDto> getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
+    Page<QuotationDto> getTop5QuotationsOrderedByVolume4LastOfThemByCompanyName();
 
     Page<QuotationDto> getTop5QuotationsOrderedByChangePercent();
 

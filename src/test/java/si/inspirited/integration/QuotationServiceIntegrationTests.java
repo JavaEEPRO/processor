@@ -12,8 +12,10 @@ import si.inspirited.persistence.model.Quotation;
 import si.inspirited.service.IQuotationService;
 import si.inspirited.util.IQuotationDaoToDtoConverter;
 
-import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,10 +35,10 @@ public class QuotationServiceIntegrationTests {
         QuotationDto quotationReturned = quotationService.addQuotation(quotationToSave);
         Long id = quotationReturned.getId();
         assertNotNull(quotationReturned);
-        assertNotEquals(id, null);
+        assertNotNull(id);
         //quotationReturned.setId(null);
         assertEquals(daoToDtoConverter.getDto(quotationToSave), quotationReturned);
-        Page<QuotationDto> receivedPage = quotationService.getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
+        Page<QuotationDto> receivedPage = quotationService.getTop5QuotationsOrderedByVolume4LastOfThemByCompanyName();
         List<QuotationDto> receivedList = receivedPage.getContent();
         assertEquals(1, receivedList.size());
         QuotationDto quotationQueried = receivedList.get(0);
@@ -59,23 +61,23 @@ public class QuotationServiceIntegrationTests {
     }
 
     @Test
-    public void addDozenQuotations_whenReceivedPageHasOnlyTopFiveOrderedByLatestPrice4LastOfThemByCompanyName_thenCorrect() {
+    public void addDozenQuotations_whenReceivedPageHasOnlyTopFiveOrderedByValue4LastOfThemByCompanyName_thenCorrect() {
         List<Quotation> quotationsBeenAdded = addAndGetDozenOfQuotation();
-        Page<QuotationDto> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByLatestPrice4LastOfThemByCompanyName();
+        Page<QuotationDto> quotationsBeenQueried = quotationService.getTop5QuotationsOrderedByVolume4LastOfThemByCompanyName();
         assertEquals(5, quotationsBeenQueried.getContent().size());
         List<QuotationDto> listQuotationsBeenQueried = quotationsBeenQueried.getContent();
-        // 1. first Quotation should have max value
+        // 1. first Quotation should have max volume
         QuotationDto firstQuotation = listQuotationsBeenQueried.get(0);
-        Double firstQuotationLatestPriceExpectedToBeTheHighest = firstQuotation.getLatestPrice();
+        Integer firstQuotationVolumeExpectedToBeTheHighest = firstQuotation.getVolume();
             // 1.1 among others in queried list
         for (int i = 1; i < listQuotationsBeenQueried.size() - 1; i++) {
-            Double thisQuotationLatestPrice = listQuotationsBeenQueried.get( i ).getLatestPrice();
-            assertTrue(thisQuotationLatestPrice < firstQuotationLatestPriceExpectedToBeTheHighest);
+            Integer thisQuotationVolume = listQuotationsBeenQueried.get( i ).getVolume();
+            assertTrue(thisQuotationVolume < firstQuotationVolumeExpectedToBeTheHighest);
         }
             // 1.2 among all in full list, that was added
         for (int i = 0; i < quotationsBeenAdded.size(); i++) {
-            Double thisQuotationLatestPrice = quotationsBeenAdded.get( i ).getLatestPrice();
-            assertTrue(thisQuotationLatestPrice <= firstQuotationLatestPriceExpectedToBeTheHighest);
+            Integer thisQuotationVolume = quotationsBeenAdded.get( i ).getVolume();
+            assertTrue(thisQuotationVolume <= firstQuotationVolumeExpectedToBeTheHighest);
         }
         // 2. four last Quotations should be sorted by companyName
         for (int i = 1; i < listQuotationsBeenQueried.size() - 1; i++) {
@@ -83,7 +85,6 @@ public class QuotationServiceIntegrationTests {
             QuotationDto nextQuotation = listQuotationsBeenQueried.get(i + 1);
             assertTrue(thisQuotation.getCompanyName().compareTo(nextQuotation.getCompanyName()) <= 0);
         }
-        //assertTrue(listQuotationsBeenQueried.stream().min(Comparator.comparingDouble(QuotationDto::getLatestPrice)).get().getLatestPrice() >= quotationsBeenAdded.stream().min(Comparator.comparingDouble(Quotation::getLatestPrice)).get().getLatestPrice());
     }
 
     @After
@@ -94,16 +95,17 @@ public class QuotationServiceIntegrationTests {
     //
     private List<Quotation> addAndGetDozenOfQuotation() {
         List<Quotation> res = new ArrayList<>();
-
         for (int i = 0; i < 12; i++) {
             Quotation nextQuotation = getStubQuotation();
             Random random = new Random();
             Double latestPrice = nextQuotation.getLatestPrice() * random.nextDouble();
             Double changePercent = nextQuotation.getChangePercent() * random.nextDouble();
+            Integer volume = nextQuotation.getVolume() * random.nextInt();
             String companyName = nextQuotation.getCompanyName().substring(i);
             nextQuotation.setLatestPrice(latestPrice);
             nextQuotation.setChangePercent(changePercent);
             nextQuotation.setCompanyName(companyName);
+            nextQuotation.setVolume(volume);
             QuotationDto nextQuotationDto = quotationService.addQuotation(nextQuotation);
             nextQuotation.setId(nextQuotationDto.getId());
             res.add(nextQuotation);
@@ -121,6 +123,7 @@ public class QuotationServiceIntegrationTests {
         res.setOpenTime(1375632L);
         res.setLatestPrice(213.731);
         res.setChangePercent(-0.0007);
+        res.setVolume(98765);
         return res;
     }
 }
