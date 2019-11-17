@@ -39,16 +39,16 @@ public class QuotationRepositoryTests {
     }
 
     @Test
-    public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByLatestPrice_thenCorrect() {
+    public void pushDozenQuotationsToRepo_whenCouldQueryThemSortedByVolume_thenCorrect() {
         List<Quotation> quotationsBeenPushed = storeAndGetCoupleQuotations();
         PageRequest pageRequest = PageRequest.of(0, DOZEN);
         Page<Quotation> pageQuotationsBeenQueried = quotationRepository.findTopOrderedByVolume(pageRequest);
         List<Quotation> quotationsBeenQueried = pageQuotationsBeenQueried.getContent();
         assertEquals(quotationsBeenPushed.size(), quotationsBeenQueried.size());
         for (int i = 0; i < quotationsBeenQueried.size() - 1; i++) {
-            Double thisQuotationLatestPrice = quotationsBeenQueried.get( i ).getLatestPrice();
-            Double nextQuotationLatestPrice = quotationsBeenQueried.get( i + 1 ).getLatestPrice();
-            assertTrue(thisQuotationLatestPrice > nextQuotationLatestPrice);
+            Integer thisQuotationVolume = quotationsBeenQueried.get( i ).getVolume();
+            Integer nextQuotationVolume = quotationsBeenQueried.get( i + 1 ).getVolume();
+            assertTrue(thisQuotationVolume > nextQuotationVolume);
         }
     }
 
@@ -79,8 +79,10 @@ public class QuotationRepositoryTests {
             Random random = new Random();
             Double latestPrice = nextQuotation.getLatestPrice() * random.nextDouble();
             Double changePercent = nextQuotation.getChangePercent() * random.nextDouble();
+            Integer volume = nextQuotation.getVolume() * random.nextInt();
             nextQuotation.setLatestPrice(latestPrice);
             nextQuotation.setChangePercent(changePercent);
+            nextQuotation.setVolume(volume);
             nextQuotation = quotationRepository.save(nextQuotation);
             res.add(nextQuotation);
         }
@@ -97,6 +99,7 @@ public class QuotationRepositoryTests {
         res.setOpenTime(134375L);
         res.setLatestPrice(352.347);
         res.setChangePercent(-0.0004);
+        res.setVolume(76543);
         return res;
     }
 }
