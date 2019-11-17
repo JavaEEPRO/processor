@@ -9,7 +9,7 @@ public class RowDto {
 
     private String exchange;
     private String name;
-    private LocalDate date;
+    private String date;
 
     //
     public String getSymbol() {
@@ -44,11 +44,11 @@ public class RowDto {
         this.name = name;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

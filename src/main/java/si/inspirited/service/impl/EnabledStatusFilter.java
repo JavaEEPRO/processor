@@ -24,7 +24,7 @@ public class EnabledStatusFilter implements IEnabledStatusFilter {
             Boolean enabled = false;
             String exchange = "";
             String name = "";
-            LocalDate date = null;
+            String date = null;
             if (mapped.containsKey("symbol")) {
                 symbol = (String) mapped.get("symbol");
             }
@@ -38,7 +38,7 @@ public class EnabledStatusFilter implements IEnabledStatusFilter {
                 name = (String) mapped.get("name");
             }
             if (mapped.containsKey("date")) {
-                date = (LocalDate) mapped.get("date");
+                date = (String) mapped.get("date");
             }
                 if (enabled) {
                     RowDto row = new RowDto();
