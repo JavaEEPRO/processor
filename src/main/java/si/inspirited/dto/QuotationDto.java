@@ -422,4 +422,16 @@ public class QuotationDto {
     public int hashCode() {
         return Objects.hash(id, symbol, companyName);
     }
+
+    @Override
+    public String toString() {
+        return "Quotation Description{" +
+                "symbol='" + symbol + '\'' +
+                ", companyName='" + companyName + '\'' +
+                ", openTime=" + openTime +
+                ", latestPrice=" + latestPrice +
+                ", volume=" + volume +
+                ", isUsMarketOpen=" + isUsMarketOpen +
+                '}';
+    }
 }
